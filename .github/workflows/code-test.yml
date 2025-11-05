@@ -21,6 +21,16 @@ jobs:
         pipx ensurepath
         pipx install meson==0.61
         pipx install ninja
+
+    - name: Download Dependencies 
+      run: |        
+        libcap=$(curl -s https://api.github.com/repos/DreamConnected/AndroidLibcapBuild/releases/latest | grep browser_download_url | cut -d'"' -f4 |grep -E 'zip$')
+        libcap_file=$(curl -s https://api.github.com/repos/DreamConnected/AndroidLibcapBuild/releases/latest | grep name | cut -d'"' -f4 |grep -E 'zip$')
+        wget -q ${libcap} && sudo unzip -q -o ${libcap_file} -d / && echo 2/5 ${libcap} ${libcap_file}
+
+        libseccomp=$(curl -s https://api.github.com/repos/DreamConnected/libseccomp-dev/releases/latest | grep browser_download_url | cut -d'"' -f4 |grep -E 'zip$')
+        libseccomp_file=$(curl -s https://api.github.com/repos/DreamConnected/libseccomp-dev/releases/latest | grep name | cut -d'"' -f4 |grep -E 'zip$')
+        wget -q ${libseccomp} && sudo unzip -q -o ${libseccomp_file} -d / && echo 5/5 ${libseccomp} ${libseccomp_file}
         
     - name: Test build
       run: |
