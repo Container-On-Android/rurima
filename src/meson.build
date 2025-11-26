@@ -54,6 +54,33 @@ libcprintf_dep = declare_dependency(
 
 install_headers('ruri/src/include/cprintf.h', subdir: 'cprintf')
 
+## libssfx
+libssfx_include_dir = include_directories('ssfx/include')
+
+libssfx_sources = [
+  'ssfx/ssfx.c',
+]
+
+libssfx = library('ssfx',
+  libssfx_sources,
+  include_directories: libssfx_include_dir,
+  install: true,
+  version: '0.9.0',
+  soversion: '0',
+)
+
+pkgconfig.generate(libssfx,
+  name: 'libssfx',
+  description: 'ssfx library',
+  version: '0.9.0',
+)
+
+libssfx_dep = declare_dependency(
+  link_with: libssfx,
+  include_directories: libssfx_include_dir,
+)
+
+install_headers('ssfx/include/ssfx.h', subdir: 'ssfx')
 
 ## libruri
 libruri_include_dir = include_directories(
@@ -112,6 +139,7 @@ libruri_dep = declare_dependency(
   dependencies: [
     libcprintf_dep,
     libcatsh_dep,
+    libssfx_dep,
     libruri_dependencies,
   ],
 )
